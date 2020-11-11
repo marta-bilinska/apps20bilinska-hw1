@@ -1,16 +1,16 @@
 package ua.edu.ucu.tempseries;
 
 
+import java.util.Comparator;
 import java.util.InputMismatchException;
 import java.util.Iterator;
-import java.util.function.BiFunction;
 
 public class TemperatureSeriesAnalysis {
     private final double possibleMinimum = -273.0;
     private double[] temperatureSeries;
     private int length;
     private Iterable<Double> getTemperatureSeries() {
-        Iterator<Double> iterator = new Iterator<Double>() {
+        final Iterator<Double> iterator = new Iterator<Double>() {
             private int i = -1;
 
             @Override
@@ -23,8 +23,18 @@ public class TemperatureSeriesAnalysis {
                 i++;
                 return temperatureSeries[i];
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
         };
-        return () -> iterator;
+        return new Iterable<Double>() {
+            @Override
+            public Iterator<Double> iterator() {
+                return iterator;
+            }
+        };
     };
 
     public TemperatureSeriesAnalysis() {
@@ -118,25 +128,38 @@ public class TemperatureSeriesAnalysis {
     }
 
     public double[] findTempsLessThan(double tempValue) {
-        return findElements(tempValue, (x, y) -> x < y);
+        return findElements(tempValue, new Comparator<Double>() {
+            @Override
+            public int compare(Double o1, Double o2) {
+                return o1 < o2? 1 : -1;
+            }
+        });
     }
 
     public double[] findTempsGreaterThan(double tempValue) {
-        return findElements(tempValue, (x, y) -> x >= y);
+        return findElements(tempValue, new Comparator<Double>() {
+            @Override
+            public int compare(Double o1, Double o2) {
+                return o1 >= o2? 1 : -1;
+            }
+        });
     }
 
-    private double[] findElements(double tempValue, BiFunction<Double, Double, Boolean> comparator) {
+
+
+
+    private double[] findElements(double tempValue,Comparator<Double> comparator) {
 
         int length = 0;
         for (double temperature : getTemperatureSeries()) {
-            if (comparator.apply(temperature, tempValue)) {
+            if (comparator.compare(temperature, tempValue) > 0) {
                 length++;
             }
         }
         double[] result = new double[length];
         int i = 0;
         for (double temperature : getTemperatureSeries()) {
-            if (comparator.apply(temperature, tempValue)) {
+            if (comparator.compare(temperature, tempValue) > 0) {
                 result[i] = temperature;
                 i++;
             }
