@@ -304,12 +304,12 @@ public class TemperatureSeriesAnalysisTest {
         TemperatureSeriesAnalysis seriesAnalysis = new TemperatureSeriesAnalysis(temperatureSeries);
 
     }
-    @Test(expected = InputMismatchException.class)
-    public void testAddValidation() {
-        double[] temperatureSeries = {12, 1, 235, 23};
-        TemperatureSeriesAnalysis seriesAnalysis = new TemperatureSeriesAnalysis(temperatureSeries);
-        seriesAnalysis.addTemps(-750, 0);
-    }
+//    @Test(expected = InputMismatchException.class)
+//    public void testAddValidation() {
+//        double[] temperatureSeries = {12, 1, 235, 23};
+//        TemperatureSeriesAnalysis seriesAnalysis = new TemperatureSeriesAnalysis(temperatureSeries);
+//        seriesAnalysis.addTemps(-750, 0);
+//    }
 
     @Test
     public void testAddValidationAverage() {
