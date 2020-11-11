@@ -304,5 +304,33 @@ public class TemperatureSeriesAnalysisTest {
         TemperatureSeriesAnalysis seriesAnalysis = new TemperatureSeriesAnalysis(temperatureSeries);
 
     }
+    @Test(expected = InputMismatchException.class)
+    public void testAddValidation() {
+        double[] temperatureSeries = {12, 1, 235, 23};
+        TemperatureSeriesAnalysis seriesAnalysis = new TemperatureSeriesAnalysis(temperatureSeries);
+        seriesAnalysis.addTemps(-750, 0);
+    }
+
+    @Test
+    public void testAddValidationAverage() {
+        double[] temperatureSeries = {12, 1, 235};
+        TemperatureSeriesAnalysis seriesAnalysis = new TemperatureSeriesAnalysis(temperatureSeries);
+        seriesAnalysis.addTemps(750, 0);
+        int expResult = 5;
+        int actualResult = seriesAnalysis.getLength();
+        assert (expResult == actualResult);
+    }
+
+    @Test
+    public void testAddValidationLonger() {
+        double[] temperatureSeries = {12, 1, 235};
+        TemperatureSeriesAnalysis seriesAnalysis = new TemperatureSeriesAnalysis(temperatureSeries);
+        seriesAnalysis.addTemps(750, 0, 34, 45, 56, 6, 11, 12, 123);
+        int expResult = 12;
+        int actualResult = seriesAnalysis.getLength();
+        assert (expResult == actualResult);
+    }
+
+
 
 }
