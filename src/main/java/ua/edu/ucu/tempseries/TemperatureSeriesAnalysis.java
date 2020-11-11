@@ -7,9 +7,9 @@ import java.util.Iterator;
 
 public class TemperatureSeriesAnalysis {
     private final double possibleMinimum = -273.0;
+    private final int initialSize = 10;
     private double[] temperatureSeries;
     private int length;
-    private int initialSize = 10;
 
     public TemperatureSeriesAnalysis() {
         this.temperatureSeries = new double[initialSize];
@@ -37,8 +37,7 @@ public class TemperatureSeriesAnalysis {
                     }
                     @Override
                     public Double next() {
-                        i++;
-                        return temperatureSeries[i];
+                        return temperatureSeries[++i];
                     }
                     @Override
                     public void remove() {
@@ -121,8 +120,8 @@ public class TemperatureSeriesAnalysis {
         double result = Double.POSITIVE_INFINITY;
         for (double temperature : getTemperatureSeries()) {
             double distance = Math.abs(temperature - tempValue);
-            if (distance < closestDistance |
-                    (distance == closestDistance & result < temperature)
+            if (distance < closestDistance
+                    || (distance == closestDistance && result < temperature)
             ) {
                 closestDistance = distance;
                 result = temperature;

@@ -21,8 +21,8 @@ public final class TempSummaryStatistics {
             return false;
         }
         return (this.avgTemp == other.avgTemp
-                & this.devTemp == other.devTemp
-                & this.maxTemp == other.maxTemp
-                & this.minTemp == other.minTemp);
+                && this.devTemp == other.devTemp
+                && this.maxTemp == other.maxTemp
+                && this.minTemp == other.minTemp);
     }
 }
