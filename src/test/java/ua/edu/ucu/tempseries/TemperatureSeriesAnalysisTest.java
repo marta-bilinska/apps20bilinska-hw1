@@ -201,7 +201,7 @@ public class TemperatureSeriesAnalysisTest {
     public void testFindTempsLessThanAverageArray() {
         double[] temperatureSeries = averageArray;
         TemperatureSeriesAnalysis seriesAnalysis = new TemperatureSeriesAnalysis(temperatureSeries);
-        double[] expResult = { 1.0, -1.0};
+        double[] expResult = {1.0, -1.0};
         double[] actualResult = seriesAnalysis.findTempsLessThan(3.0);
         assertArrayEquals(expResult, actualResult, 0.00001);
     }
@@ -288,6 +288,7 @@ public class TemperatureSeriesAnalysisTest {
         TempSummaryStatistics actualResult = seriesAnalysis.summaryStatistics();
         assert (expResult.checkEquals(actualResult));
     }
+
     @Test
     public void testDefaultConstructor() {
         TemperatureSeriesAnalysis seriesAnalysis = new TemperatureSeriesAnalysis();
@@ -296,6 +297,7 @@ public class TemperatureSeriesAnalysisTest {
 
         assert (expResult == actualResult);
     }
+
     @Test(expected = InputMismatchException.class)
     public void testInputValidation() {
         double[] temperatureSeries = {-400, -380, 1, 235, 23};

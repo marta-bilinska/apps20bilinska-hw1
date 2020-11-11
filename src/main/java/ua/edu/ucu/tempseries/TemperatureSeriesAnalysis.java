@@ -31,18 +31,15 @@ public class TemperatureSeriesAnalysis {
             public Iterator<Double> iterator() {
                 return new Iterator<Double>() {
                     private int i = -1;
-
                     @Override
                     public boolean hasNext() {
                         return i < length - 1;
                     }
-
                     @Override
                     public Double next() {
                         i++;
                         return temperatureSeries[i];
                     }
-
                     @Override
                     public void remove() {
                         throw new UnsupportedOperationException();
@@ -167,7 +164,8 @@ public class TemperatureSeriesAnalysis {
     }
 
 
-    private double[] findElements(double tempValue, Comparator<Double> comparator) {
+    private double[] findElements(double tempValue,
+                                  Comparator<Double> comparator) {
 
         int resultLength = 0;
         for (double temperature : getTemperatureSeries()) {

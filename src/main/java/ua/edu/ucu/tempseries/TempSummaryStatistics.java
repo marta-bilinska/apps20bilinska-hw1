@@ -6,19 +6,23 @@ public final class TempSummaryStatistics {
     private final double minTemp;
     private final double maxTemp;
 
-    public TempSummaryStatistics(double avgTemp, double devTemp, double minTemp, double maxTemp) {
+    public TempSummaryStatistics(double avgTemp,
+                                 double devTemp,
+                                 double minTemp,
+                                 double maxTemp) {
         this.avgTemp = avgTemp;
         this.devTemp = devTemp;
         this.minTemp = minTemp;
         this.maxTemp = maxTemp;
     }
-    public boolean checkEquals(TempSummaryStatistics other){
-        if (other == null){
+
+    public boolean checkEquals(TempSummaryStatistics other) {
+        if (other == null) {
             return false;
         }
-        return (this.avgTemp == other.avgTemp &
-                this.devTemp == other.devTemp &
-                this.maxTemp == other.maxTemp &
-                this.minTemp == other.minTemp);
+        return (this.avgTemp == other.avgTemp
+                & this.devTemp == other.devTemp
+                & this.maxTemp == other.maxTemp
+                & this.minTemp == other.minTemp);
     }
 }
