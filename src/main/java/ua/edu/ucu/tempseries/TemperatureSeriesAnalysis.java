@@ -6,13 +6,13 @@ import java.util.InputMismatchException;
 import java.util.Iterator;
 
 public class TemperatureSeriesAnalysis {
-    private final double POSSIBLEMINIMUM = -273.0;
-    private final int INITIALSIZE = 10;
+    private final double possibleMinimum = -273.0;
+    private final int initialSize = 10;
     private double[] temperatureSeries;
     private int length;
 
     public TemperatureSeriesAnalysis() {
-        this.temperatureSeries = new double[INITIALSIZE];
+        this.temperatureSeries = new double[initialSize];
         this.length = 0;
     }
 
@@ -65,7 +65,7 @@ public class TemperatureSeriesAnalysis {
 
     private boolean hasIllegalTemperature(double[] tempArray) {
         for (double temp : tempArray) {
-            if (temp < this.POSSIBLEMINIMUM) {
+            if (temp < this.possibleMinimum) {
                 return true;
             }
         }
