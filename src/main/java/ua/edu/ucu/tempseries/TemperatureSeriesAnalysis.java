@@ -9,66 +9,74 @@ public class TemperatureSeriesAnalysis {
     private final double possibleMinimum = -273.0;
     private double[] temperatureSeries;
     private int length;
-    private Iterable<Double> getTemperatureSeries() {
-        final Iterator<Double> iterator = new Iterator<Double>() {
-            private int i = -1;
-
-            @Override
-            public boolean hasNext() {
-                return i < length - 1;
-            }
-
-            @Override
-            public Double next() {
-                i++;
-                return temperatureSeries[i];
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
-        };
-        return new Iterable<Double>() {
-            @Override
-            public Iterator<Double> iterator() {
-                return iterator;
-            }
-        };
-    };
+    private int initialSize = 10;
 
     public TemperatureSeriesAnalysis() {
-        this.temperatureSeries = new double[10];
+        this.temperatureSeries = new double[initialSize];
         this.length = 0;
     }
 
     public TemperatureSeriesAnalysis(double[] temperatureSeries) {
-        if (hasIllegalTemperature(temperatureSeries)) throw new InputMismatchException();
+        if (hasIllegalTemperature(temperatureSeries)) {
+            throw new InputMismatchException();
+        }
         this.temperatureSeries = temperatureSeries;
         this.length = temperatureSeries.length;
 
     }
-    public void checkForEmptySeries(){
-        if (this.length < 1){
+
+    private Iterable<Double> getTemperatureSeries() {
+        return new Iterable<Double>() {
+            @Override
+            public Iterator<Double> iterator() {
+                return new Iterator<Double>() {
+                    private int i = -1;
+
+                    @Override
+                    public boolean hasNext() {
+                        return i < length - 1;
+                    }
+
+                    @Override
+                    public Double next() {
+                        i++;
+                        return temperatureSeries[i];
+                    }
+
+                    @Override
+                    public void remove() {
+                        throw new UnsupportedOperationException();
+                    }
+                };
+            }
+        };
+    }
+
+
+    public void checkForEmptySeries() {
+        if (this.length < 1) {
             throw new IllegalArgumentException();
         }
     }
-    private double sum(){
+
+    private double sum() {
         double sum = 0.0;
         for (Double temperature : getTemperatureSeries()) {
             sum += temperature;
         }
         return sum;
     }
-    private boolean hasIllegalTemperature(double[] tempArray){
-        for (double temp: tempArray){
-            if (temp < this.possibleMinimum){
+
+    private boolean hasIllegalTemperature(double[] tempArray) {
+        for (double temp : tempArray) {
+            if (temp < this.possibleMinimum) {
                 return true;
             }
         }
         return false;
     }
-    public double average(){
+
+    public double average() {
         checkForEmptySeries();
         return sum() / length;
     }
@@ -78,7 +86,8 @@ public class TemperatureSeriesAnalysis {
         double mean = average();
         double sum = 0.0;
         for (double temperature : getTemperatureSeries()) {
-            sum += Math.pow(temperature - mean, 2);
+            double diffFromMean = temperature - mean;
+            sum += diffFromMean * diffFromMean;
         }
         return Math.sqrt(sum / length);
     }
@@ -86,7 +95,7 @@ public class TemperatureSeriesAnalysis {
     public double min() {
         checkForEmptySeries();
         double min = Double.POSITIVE_INFINITY;
-        for (int i = 0; i < length; i++)  {
+        for (int i = 0; i < length; i++) {
             if (temperatureSeries[i] < min) {
                 min = temperatureSeries[i];
             }
@@ -115,7 +124,9 @@ public class TemperatureSeriesAnalysis {
         double result = Double.POSITIVE_INFINITY;
         for (double temperature : getTemperatureSeries()) {
             double distance = Math.abs(temperature - tempValue);
-            if (distance < closestDistance | (distance == closestDistance & result < temperature)) {
+            if (distance < closestDistance |
+                    (distance == closestDistance & result < temperature)
+            ) {
                 closestDistance = distance;
                 result = temperature;
             }
@@ -123,15 +134,21 @@ public class TemperatureSeriesAnalysis {
         return result;
     }
 
-    public int getLength(){
+    public int getLength() {
         return length;
     }
 
     public double[] findTempsLessThan(double tempValue) {
         return findElements(tempValue, new Comparator<Double>() {
             @Override
-            public int compare(Double o1, Double o2) {
-                return o1 < o2? 1 : -1;
+            public int compare(Double x, Double y) {
+
+                if (x < y) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+
             }
         });
     }
@@ -139,24 +156,26 @@ public class TemperatureSeriesAnalysis {
     public double[] findTempsGreaterThan(double tempValue) {
         return findElements(tempValue, new Comparator<Double>() {
             @Override
-            public int compare(Double o1, Double o2) {
-                return o1 >= o2? 1 : -1;
+            public int compare(Double x, Double y) {
+                if (x >= y) {
+                    return 1;
+                } else {
+                    return -1;
+                }
             }
         });
     }
 
 
+    private double[] findElements(double tempValue, Comparator<Double> comparator) {
 
-
-    private double[] findElements(double tempValue,Comparator<Double> comparator) {
-
-        int length = 0;
+        int resultLength = 0;
         for (double temperature : getTemperatureSeries()) {
             if (comparator.compare(temperature, tempValue) > 0) {
-                length++;
+                resultLength++;
             }
         }
-        double[] result = new double[length];
+        double[] result = new double[resultLength];
         int i = 0;
         for (double temperature : getTemperatureSeries()) {
             if (comparator.compare(temperature, tempValue) > 0) {
@@ -170,19 +189,25 @@ public class TemperatureSeriesAnalysis {
 
     public TempSummaryStatistics summaryStatistics() {
         checkForEmptySeries();
-        return new TempSummaryStatistics(this.average(), this.deviation(), this.min(), this.max());
+        return new TempSummaryStatistics(
+                this.average(),
+                this.deviation(),
+                this.min(),
+                this.max()
+        );
     }
 
     public int addTemps(double... temps) {
-        if (hasIllegalTemperature(temperatureSeries)) throw new InputMismatchException();
+        if (hasIllegalTemperature(temperatureSeries)) {
+            throw new InputMismatchException();
+        }
         int requiredLength = length + temps.length;
         if (requiredLength > temperatureSeries.length) {
             int newLength = 0;
-            if (length*2 < requiredLength){
+            if (length * 2 < requiredLength) {
                 newLength = requiredLength;
-            }
-            else{
-                newLength = length*2;
+            } else {
+                newLength = length * 2;
             }
             double[] newTempArray = new double[newLength];
             int i = 0;
@@ -192,9 +217,9 @@ public class TemperatureSeriesAnalysis {
             }
             temperatureSeries = newTempArray;
         }
-        for (double temp: temps){
+        for (double temp : temps) {
             temperatureSeries[length] = temp;
-            length ++;
+            length++;
         }
         return length;
     }
