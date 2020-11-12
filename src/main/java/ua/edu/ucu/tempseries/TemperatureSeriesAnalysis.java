@@ -1,9 +1,10 @@
 package ua.edu.ucu.tempseries;
 
 
-import java.util.Comparator;
+
 import java.util.InputMismatchException;
 import java.util.Iterator;
+import java.util.function.BiFunction;
 
 public class TemperatureSeriesAnalysis {
     private final double possibleMinimum = -273.0;
@@ -26,24 +27,19 @@ public class TemperatureSeriesAnalysis {
     }
 
     private Iterable<Double> getTemperatureSeries() {
-        return new Iterable<Double>() {
+        return () -> new Iterator<Double>() {
+            private int i = -1;
             @Override
-            public Iterator<Double> iterator() {
-                return new Iterator<Double>() {
-                    private int i = -1;
-                    @Override
-                    public boolean hasNext() {
-                        return i < length - 1;
-                    }
-                    @Override
-                    public Double next() {
-                        return temperatureSeries[++i];
-                    }
-                    @Override
-                    public void remove() {
-                        throw new UnsupportedOperationException();
-                    }
-                };
+            public boolean hasNext() {
+                return i < length - 1;
+            }
+            @Override
+            public Double next() {
+                return temperatureSeries[++i];
+            }
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
             }
         };
     }
@@ -57,7 +53,7 @@ public class TemperatureSeriesAnalysis {
 
     private double sum() {
         double sum = 0.0;
-        for (Double temperature : getTemperatureSeries()) {
+        for (double temperature : getTemperatureSeries()) {
             sum += temperature;
         }
         return sum;
@@ -130,52 +126,28 @@ public class TemperatureSeriesAnalysis {
         return result;
     }
 
-    public int getLength() {
-        return length;
+    public double[] findTempsLessThen(double tempValue) {
+        return findElements(tempValue, (x, y) -> x < y);
     }
 
-    public double[] findTempsLessThan(double tempValue) {
-        return findElements(tempValue, new Comparator<Double>() {
-            @Override
-            public int compare(Double x, Double y) {
-
-                if (x < y) {
-                    return 1;
-                } else {
-                    return -1;
-                }
-
-            }
-        });
-    }
-
-    public double[] findTempsGreaterThan(double tempValue) {
-        return findElements(tempValue, new Comparator<Double>() {
-            @Override
-            public int compare(Double x, Double y) {
-                if (x >= y) {
-                    return 1;
-                } else {
-                    return -1;
-                }
-            }
-        });
+    public double[] findTempsGreaterThen(double tempValue) {
+        return findElements(tempValue, (x, y) -> x >= y);
     }
 
 
     private double[] findElements(double tempValue,
-                                  Comparator<Double> comparator) {
+                                  BiFunction<Double, Double, Boolean> comparator) {
 
         int resultLength = 0;
         for (double temperature : getTemperatureSeries()) {
-            if (comparator.compare(temperature, tempValue) > 0) {
+            if (comparator.apply(temperature, tempValue)) {
                 resultLength++;
             }
         }
         double[] result = new double[resultLength];
         int i = 0;
         for (double temperature : getTemperatureSeries()) {
-            if (comparator.compare(temperature, tempValue) > 0) {
+            if (comparator.apply(temperature, tempValue)) {
                 result[i] = temperature;
                 i++;
             }
@@ -183,6 +155,9 @@ public class TemperatureSeriesAnalysis {
         return result;
     }
 
+    public int getLength(){
+        return length;
+    }
 
     public TempSummaryStatistics summaryStatistics() {
         checkForEmptySeries();
