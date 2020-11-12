@@ -304,6 +304,7 @@ public class TemperatureSeriesAnalysisTest {
         TemperatureSeriesAnalysis seriesAnalysis = new TemperatureSeriesAnalysis(temperatureSeries);
 
     }
+
     @Test(expected = InputMismatchException.class)
     public void testAddValidation() {
         double[] temperatureSeries = {12, 1, 235, 23};

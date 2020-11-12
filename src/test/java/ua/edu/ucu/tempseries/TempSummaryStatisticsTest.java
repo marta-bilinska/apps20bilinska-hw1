@@ -1,4 +1,5 @@
 package ua.edu.ucu.tempseries;
+
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -14,7 +15,7 @@ public class TempSummaryStatisticsTest {
     }
 
     @Test
-    public void testCheckEqualsTrue(){
+    public void testCheckEqualsTrue() {
         TempSummaryStatistics stat1 =
                 new TempSummaryStatistics(1, 2, 1, 11);
         TempSummaryStatistics stat2 =
@@ -23,7 +24,7 @@ public class TempSummaryStatisticsTest {
     }
 
     @Test
-    public void testCheckEqualsFalse(){
+    public void testCheckEqualsFalse() {
         TempSummaryStatistics stat1 =
                 new TempSummaryStatistics(1, 2, 1, 11);
         TempSummaryStatistics stat2 =
