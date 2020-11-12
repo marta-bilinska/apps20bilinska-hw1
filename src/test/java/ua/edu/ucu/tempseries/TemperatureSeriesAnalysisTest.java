@@ -331,6 +331,19 @@ public class TemperatureSeriesAnalysisTest {
         assert (expResult == actualResult);
     }
 
+    @Test(expected = UnsupportedOperationException.class)
+    public void testGetTemperatureSeriesRemove() {
+        double[] temperatureSeries = {12, 1, 235};
+        TemperatureSeriesAnalysis seriesAnalysis = new TemperatureSeriesAnalysis(temperatureSeries);
+        seriesAnalysis.getTemperatureSeries().iterator().remove();
+    }
 
-
+    @Test
+    public void testAddTempsEmpty() {
+        TemperatureSeriesAnalysis seriesAnalysis = new TemperatureSeriesAnalysis();
+        seriesAnalysis.addTemps(750, 0);
+        int expResult = 2;
+        int actualResult = seriesAnalysis.getLength();
+        assert (expResult == actualResult);
+    }
 }

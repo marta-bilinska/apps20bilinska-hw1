@@ -26,7 +26,7 @@ public class TemperatureSeriesAnalysis {
 
     }
 
-    private Iterable<Double> getTemperatureSeries() {
+    public Iterable<Double> getTemperatureSeries() {
         return () -> new Iterator<Double>() {
             private int i = -1;
             @Override
@@ -136,7 +136,7 @@ public class TemperatureSeriesAnalysis {
 
 
     private double[] findElements(double tempValue,
-                                  BiFunction<Double, Double, Boolean> comparator) {
+                          BiFunction<Double, Double, Boolean> comparator) {
 
         int resultLength = 0;
         for (double temperature : getTemperatureSeries()) {
@@ -155,7 +155,7 @@ public class TemperatureSeriesAnalysis {
         return result;
     }
 
-    public int getLength(){
+    public int getLength() {
         return length;
     }
 
