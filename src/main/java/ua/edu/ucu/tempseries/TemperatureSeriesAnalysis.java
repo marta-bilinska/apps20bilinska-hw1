@@ -7,8 +7,8 @@ import java.util.Iterator;
 import java.util.function.BiFunction;
 
 public class TemperatureSeriesAnalysis {
-    private final double possibleMinimum = -273.0;
-    private final int initialSize = 10;
+    private final static double possibleMinimum = -273.0;
+    private final static int initialSize = 10;
     private double[] temperatureSeries;
     private int length;
 
@@ -21,8 +21,11 @@ public class TemperatureSeriesAnalysis {
         if (hasIllegalTemperature(temperatureSeries)) {
             throw new InputMismatchException();
         }
-        this.temperatureSeries = temperatureSeries;
-        this.length = temperatureSeries.length;
+        int initialLength = temperatureSeries.length;
+        this.temperatureSeries = new double[initialLength];
+        System.arraycopy(temperatureSeries, 0, this.temperatureSeries, 0, initialLength);
+
+        this.length = initialLength;
 
     }
 
@@ -116,7 +119,7 @@ public class TemperatureSeriesAnalysis {
         double result = Double.POSITIVE_INFINITY;
         for (double temperature : getTemperatureSeries()) {
             double distance = Math.abs(temperature - tempValue);
-            if (distance < closestDistance
+            if (distance - closestDistance < 0
                     || (distance == closestDistance && result < temperature)
             ) {
                 closestDistance = distance;
