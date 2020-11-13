@@ -9,6 +9,7 @@ import java.util.function.BiFunction;
 public class TemperatureSeriesAnalysis {
     private static final double POSSIBLE_MINIMUM = -273.0;
     private static final int INITIAL_SIZE = 10;
+    private static final double DELTA = 0.000001;
     private double[] temperatureSeries;
     private int length;
 
@@ -120,8 +121,9 @@ public class TemperatureSeriesAnalysis {
         double result = Double.POSITIVE_INFINITY;
         for (double temperature : getTemperatureSeries()) {
             double distance = Math.abs(temperature - tempValue);
-            if ( (distance < closestDistance)
-                    || (Math.abs(distance - closestDistance) < 0.000001 && result < temperature)
+            if ((distance < closestDistance)
+                    || (Math.abs(distance - closestDistance) < DELTA
+                    && result < temperature)
             ) {
                 closestDistance = distance;
                 result = temperature;

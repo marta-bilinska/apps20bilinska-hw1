@@ -286,7 +286,10 @@ public class TemperatureSeriesAnalysisTest {
         TempSummaryStatistics expResult = new TempSummaryStatistics(3.25, 4.14578098794425, -1.0, 10.0);
 
         TempSummaryStatistics actualResult = seriesAnalysis.summaryStatistics();
-        assert (expResult.checkEquals(actualResult));
+        assert (expResult.getAvgTemp() == actualResult.getAvgTemp()
+                && expResult.getMaxTemp() == actualResult.getMaxTemp()
+                && expResult.getMinTemp() == actualResult.getMinTemp()
+                && expResult.getDevTemp() == actualResult.getDevTemp());
     }
 
     @Test
