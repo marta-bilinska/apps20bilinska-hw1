@@ -7,13 +7,13 @@ import java.util.Iterator;
 import java.util.function.BiFunction;
 
 public class TemperatureSeriesAnalysis {
-    private final static double possibleMinimum = -273.0;
-    private final static int initialSize = 10;
+    private static final double POSSIBLE_MINIMUM = -273.0;
+    private static final int INITIAL_SIZE = 10;
     private double[] temperatureSeries;
     private int length;
 
     public TemperatureSeriesAnalysis() {
-        this.temperatureSeries = new double[initialSize];
+        this.temperatureSeries = new double[INITIAL_SIZE];
         this.length = 0;
     }
 
@@ -23,7 +23,8 @@ public class TemperatureSeriesAnalysis {
         }
         int initialLength = temperatureSeries.length;
         this.temperatureSeries = new double[initialLength];
-        System.arraycopy(temperatureSeries, 0, this.temperatureSeries, 0, initialLength);
+        System.arraycopy(temperatureSeries, 0,
+                this.temperatureSeries, 0, initialLength);
 
         this.length = initialLength;
 
@@ -64,7 +65,7 @@ public class TemperatureSeriesAnalysis {
 
     private boolean hasIllegalTemperature(double[] tempArray) {
         for (double temp : tempArray) {
-            if (temp < this.possibleMinimum) {
+            if (temp < this.POSSIBLE_MINIMUM) {
                 return true;
             }
         }
@@ -119,8 +120,8 @@ public class TemperatureSeriesAnalysis {
         double result = Double.POSITIVE_INFINITY;
         for (double temperature : getTemperatureSeries()) {
             double distance = Math.abs(temperature - tempValue);
-            if (distance - closestDistance < 0
-                    || (distance == closestDistance && result < temperature)
+            if ( (distance < closestDistance)
+                    || (Math.abs(distance - closestDistance) < 0.000001 && result < temperature)
             ) {
                 closestDistance = distance;
                 result = temperature;
