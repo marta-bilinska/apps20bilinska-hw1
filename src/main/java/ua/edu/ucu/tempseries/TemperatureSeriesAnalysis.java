@@ -41,7 +41,7 @@ public class TemperatureSeriesAnalysis {
             }
             @Override
             public Double next() throws NoSuchElementException {
-                if (!hasNext()){
+                if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
                 return temperatureSeries[++i];

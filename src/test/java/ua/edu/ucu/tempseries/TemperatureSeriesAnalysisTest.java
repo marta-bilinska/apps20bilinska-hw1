@@ -6,6 +6,8 @@ import org.junit.Test;
 import org.junit.Ignore;
 
 import java.util.InputMismatchException;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class TemperatureSeriesAnalysisTest {
     double[] averageArray = {1.0, 10.0, 3.0, -1.0};
@@ -349,5 +351,14 @@ public class TemperatureSeriesAnalysisTest {
         int expResult = 2;
         int actualResult = seriesAnalysis.getLength();
         assert (expResult == actualResult);
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void testGetTemperature() {
+        TemperatureSeriesAnalysis seriesAnalysis = new TemperatureSeriesAnalysis(arrayOfOne);
+        Iterator iter = seriesAnalysis.getTemperatureSeries().iterator();
+        for (int i = 0; i < 3; i++) {
+            iter.next();
+        }
     }
 }
