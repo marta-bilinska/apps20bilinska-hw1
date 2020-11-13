@@ -4,6 +4,7 @@ package ua.edu.ucu.tempseries;
 
 import java.util.InputMismatchException;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.function.BiFunction;
 
 public class TemperatureSeriesAnalysis {
@@ -39,7 +40,10 @@ public class TemperatureSeriesAnalysis {
                 return i < length - 1;
             }
             @Override
-            public Double next() {
+            public Double next() throws NoSuchElementException {
+                if (!hasNext()){
+                    throw new NoSuchElementException();
+                }
                 return temperatureSeries[++i];
             }
             @Override
